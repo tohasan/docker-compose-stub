@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  reverse-proxy:
+    image: nginx:1.18
+    container_name: reverse-proxy
+    hostname: reverse-proxy
+    ports:
+      - 80:80
+    volumes:
+      - ./reverse-proxy:/etc/nginx
+
+  app-stub:
+    image: tohasan/app-stub
+    container_name: app-stub
+    hostname: service-stub
+    ports:
+      - 3000:3000
+
+  service-stub:
+    image: tohasan/service-stub
+    container_name: service-stub
+    hostname: service-stub
+    ports:
+      - 4000:4000
+
+  storage:
+    image: postgres:11
+    container_name: storage
+    hostname: storage
+    ports:
+      - 5430:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "atc8034G!#"
+
+volumes:
+  postgres-data:
